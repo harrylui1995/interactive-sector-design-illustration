@@ -177,7 +177,7 @@
                     <div class="description">
                         ${description}
                     </div>
-                    <a href="${folder}/${scenarioName}.html" class="viz-link">View ${type}</a>
+                    <a href="${folder}/${scenarioName}.html" class="viz-link"> View </a>
                 </div>
             `;
         }
@@ -194,7 +194,7 @@
         function generateLayer2Cards() {
             const container = document.getElementById('layer2-grid');
             for (let i = LAYER2_RANGE.start; i <= LAYER2_RANGE.end; i++) {
-                container.innerHTML += createCard(i, 'Layer 2');
+                container.innerHTML += createCard(i, '2 layers');
             }
         }
 
