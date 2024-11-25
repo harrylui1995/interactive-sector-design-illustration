@@ -86,7 +86,7 @@
             background: #e3f2fd;
             color: #1565c0;
         }
-        .tag-analysis {
+        .tag-layer2 {
             background: #f3e5f5;
             color: #7b1fa2;
         }
@@ -134,7 +134,7 @@
 
         <div class="tab-container">
             <a href="#scenarios" class="tab active">Scenarios</a>
-            <a href="#analysis" class="tab">Analysis</a>
+            <a href="#layer2" class="tab">Layer 2</a>
         </div>
 
         <!-- Traffic Scenarios Section -->
@@ -146,32 +146,35 @@
             <div class="viz-grid" id="scenarios-grid"></div>
         </div>
 
-        <!-- Analysis Section -->
-        <div class="section-container" id="analysis">
+        <!-- Layer 2 Section -->
+        <div class="section-container" id="layer2">
             <h3 class="section-title">
-                Analysis Results
-                <a href="analysis/" class="view-all">View All Analysis →</a>
+                Layer 2 Results
+                <a href="layer_2/" class="view-all">View All Layer 2 →</a>
             </h3>
-            <div class="viz-grid" id="analysis-grid"></div>
+            <div class="viz-grid" id="layer2-grid"></div>
         </div>
     </div>
 
     <script>
         // Configuration
-        const START_SCENARIO = 5;
-        const END_SCENARIO = 21;
         const MONTH = 'Aug';
+        const SCENARIOS = [5, 6, 7]; // Specific scenarios
+        const LAYER2_RANGE = {
+            start: 5,
+            end: 21
+        };
 
         // Function to create a card
         function createCard(number, type) {
             const paddedNumber = number.toString().padStart(2, '0');
             const scenarioName = `${MONTH}_H${paddedNumber}`;
-            const folder = type.toLowerCase();
-            const title = type === 'Scenario' ? `Traffic ${scenarioName}` : `Analysis ${scenarioName}`;
+            const folder = type === 'Scenario' ? 'scenarios' : 'layer_2';
+            const title = type === 'Scenario' ? `Traffic ${scenarioName}` : `Layer 2 ${scenarioName}`;
             const description = type === 'Scenario' 
                 ? `3D airspace sector design with main traffic flow of ${scenarioName}.`
-                : `Detailed analysis and metrics for ${scenarioName}.`;
-            const tagClass = type === 'Scenario' ? 'tag-scenario' : 'tag-analysis';
+                : `Layer 2 analysis for traffic scenario ${scenarioName}.`;
+            const tagClass = type === 'Scenario' ? 'tag-scenario' : 'tag-layer2';
 
             return `
                 <div class="viz-card">
@@ -185,17 +188,25 @@
             `;
         }
 
-        // Function to generate all cards for a section
-        function generateCards(containerId, type) {
-            const container = document.getElementById(containerId);
-            for (let i = START_SCENARIO; i <= END_SCENARIO; i++) {
-                container.innerHTML += createCard(i, type);
+        // Function to generate specific scenario cards
+        function generateScenarioCards() {
+            const container = document.getElementById('scenarios-grid');
+            SCENARIOS.forEach(number => {
+                container.innerHTML += createCard(number, 'Scenario');
+            });
+        }
+
+        // Function to generate layer 2 cards
+        function generateLayer2Cards() {
+            const container = document.getElementById('layer2-grid');
+            for (let i = LAYER2_RANGE.start; i <= LAYER2_RANGE.end; i++) {
+                container.innerHTML += createCard(i, 'Layer 2');
             }
         }
 
-        // Generate cards for both sections
-        generateCards('scenarios-grid', 'Scenario');
-        generateCards('analysis-grid', 'Analysis');
+        // Generate all cards
+        generateScenarioCards();
+        generateLayer2Cards();
 
         // Tab functionality
         document.querySelectorAll('.tab').forEach(tab => {
