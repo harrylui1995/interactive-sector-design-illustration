@@ -127,21 +127,16 @@
 <body>
     <div class="container">
         <h1>Sector Design Visualization</h1>
-        
-        <div class="breadcrumb">
-            <a href="/">Home</a>
-        </div>
-
+    
         <div class="tab-container">
             <a href="#scenarios" class="tab active">Scenarios</a>
-            <a href="#layer2" class="tab">Layer 2</a>
+            <a href="#layer2" class="tab">Two Layer sector design problem</a>
         </div>
 
         <!-- Traffic Scenarios Section -->
         <div class="section-container" id="scenarios">
             <h3 class="section-title">
-                Traffic Scenarios
-                <a href="scenarios/" class="view-all">View All Scenarios →</a>
+                Scenarios Examples (TRISTAN)
             </h3>
             <div class="viz-grid" id="scenarios-grid"></div>
         </div>
@@ -149,8 +144,7 @@
         <!-- Layer 2 Section -->
         <div class="section-container" id="layer2">
             <h3 class="section-title">
-                Layer 2 Results
-                <a href="layer_2/" class="view-all">View All Layer 2 →</a>
+               Preliminary Results (D4.2)
             </h3>
             <div class="viz-grid" id="layer2-grid"></div>
         </div>
@@ -170,10 +164,10 @@
             const paddedNumber = number.toString().padStart(2, '0');
             const scenarioName = `${MONTH}_H${paddedNumber}`;
             const folder = type === 'Scenario' ? 'scenarios' : 'layer_2';
-            const title = type === 'Scenario' ? `Traffic ${scenarioName}` : `Layer 2 ${scenarioName}`;
+            const title = type === 'Scenario' ? `Traffic ${scenarioName}` : `${scenarioName}`;
             const description = type === 'Scenario' 
                 ? `3D airspace sector design with main traffic flow of ${scenarioName}.`
-                : `Layer 2 analysis for traffic scenario ${scenarioName}.`;
+                : `3D Sector visualization with main traffic flow for traffic scenario ${scenarioName}.`;
             const tagClass = type === 'Scenario' ? 'tag-scenario' : 'tag-layer2';
 
             return `
