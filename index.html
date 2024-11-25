@@ -8,7 +8,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background: #f5f5f5;
@@ -23,6 +23,20 @@
             color: #2c3e50;
             margin-bottom: 30px;
             text-align: center;
+        }
+        .section-title {
+            color: #34495e;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title .view-all {
+            font-size: 0.9rem;
+            color: #3498db;
+            text-decoration: none;
         }
         .viz-grid {
             display: grid;
@@ -42,8 +56,9 @@
         h2 {
             color: #34495e;
             margin-top: 0;
+            font-size: 1.25rem;
         }
-        a {
+        .viz-link {
             display: inline-block;
             text-decoration: none;
             color: #3498db;
@@ -53,42 +68,151 @@
             border-radius: 4px;
             margin-top: 10px;
         }
-        a:hover {
+        .viz-link:hover {
             background: #bbdefb;
         }
         .description {
             color: #666;
             margin: 10px 0;
         }
+        .category-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+        .tag-scenario {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .tag-analysis {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .section-container {
+            margin-bottom: 40px;
+        }
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .tab-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        .tab {
+            padding: 10px 20px;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            text-decoration: none;
+        }
+        .tab.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        .tab:hover {
+            color: #3498db;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Sector Design Visualization</h1>
-        <div class="viz-grid">
-            <div class="viz-card">
-                <h2>Traffic Scenario H05</h2>
-                <div class="description">
-                    3D airsapce sector design with main traffic flow of H05.
-                </div>
-                <a href="05.html">View Visualization</a>
-            </div>
-            
-            <div class="viz-card">
-                <h2>Traffic Scenario H06</h2>
-                <div class="description">
-                    3D airsapce sector design with main traffic flow of H06.
-                </div>
-                <a href="06.html">View Visualization</a>
-            </div>
-            <div class="viz-card">
-                <h2>Traffic Scenario H07</h2>
-                <div class="description">
-                    3D airsapce sector design with main traffic flow of H07.
-                </div>
-                <a href="07.html">View Visualization</a>
-            </div>
+        
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+        </div>
+
+        <div class="tab-container">
+            <a href="#scenarios" class="tab active">Scenarios</a>
+            <a href="#analysis" class="tab">Analysis</a>
+        </div>
+
+        <!-- Traffic Scenarios Section -->
+        <div class="section-container" id="scenarios">
+            <h3 class="section-title">
+                Traffic Scenarios
+                <a href="scenarios/" class="view-all">View All Scenarios →</a>
+            </h3>
+            <div class="viz-grid" id="scenarios-grid"></div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="section-container" id="analysis">
+            <h3 class="section-title">
+                Analysis Results
+                <a href="analysis/" class="view-all">View All Analysis →</a>
+            </h3>
+            <div class="viz-grid" id="analysis-grid"></div>
         </div>
     </div>
+
+    <script>
+        // Configuration
+        const START_SCENARIO = 5;
+        const END_SCENARIO = 21;
+        const MONTH = 'Aug';
+
+        // Function to create a card
+        function createCard(number, type) {
+            const paddedNumber = number.toString().padStart(2, '0');
+            const scenarioName = `${MONTH}_H${paddedNumber}`;
+            const folder = type.toLowerCase();
+            const title = type === 'Scenario' ? `Traffic ${scenarioName}` : `Analysis ${scenarioName}`;
+            const description = type === 'Scenario' 
+                ? `3D airspace sector design with main traffic flow of ${scenarioName}.`
+                : `Detailed analysis and metrics for ${scenarioName}.`;
+            const tagClass = type === 'Scenario' ? 'tag-scenario' : 'tag-analysis';
+
+            return `
+                <div class="viz-card">
+                    <span class="category-tag ${tagClass}">${type}</span>
+                    <h2>${title}</h2>
+                    <div class="description">
+                        ${description}
+                    </div>
+                    <a href="${folder}/${scenarioName}.html" class="viz-link">View ${type}</a>
+                </div>
+            `;
+        }
+
+        // Function to generate all cards for a section
+        function generateCards(containerId, type) {
+            const container = document.getElementById(containerId);
+            for (let i = START_SCENARIO; i <= END_SCENARIO; i++) {
+                container.innerHTML += createCard(i, type);
+            }
+        }
+
+        // Generate cards for both sections
+        generateCards('scenarios-grid', 'Scenario');
+        generateCards('analysis-grid', 'Analysis');
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const targetId = tab.getAttribute('href').substring(1);
+                document.querySelectorAll('.section-container').forEach(section => {
+                    section.style.display = section.id === targetId ? 'block' : 'none';
+                });
+            });
+        });
+
+        // Initialize tabs
+        document.querySelector('.tab.active').click();
+    </script>
 </body>
 </html>
